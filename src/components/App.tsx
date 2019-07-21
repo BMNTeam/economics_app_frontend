@@ -2,6 +2,7 @@ import React from 'react';
 import './App.scss';
 import {connect} from "react-redux"
 import {GlobalStore} from "../store";
+import Footer from "./footer/footer";
 import NavBar from "./nav-bar/nav-bar-component";
 import Sidenav from "./sidenav/sidenav-component";
 
@@ -22,7 +23,9 @@ const App: React.FC<{showSideNav?: boolean}> = (props: {showSideNav?: boolean}) 
               </div>
             </div>
           </div>
+          <Footer/>
         </div>
+
 
       </div>
   );

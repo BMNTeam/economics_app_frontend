@@ -1,40 +1,28 @@
 import React from 'react';
 import './App.scss';
-import {connect} from "react-redux"
-import {GlobalStore} from "../store";
-import Footer from "./footer/footer";
-import NavBar from "./nav-bar/nav-bar-component";
-import Sidenav from "./sidenav/sidenav-component";
+import {Route, Router, Switch} from "react-router";
+import {MainComponent} from "./main.component";
+import Login from "./security/login.component";
+import PrivateRoute from "./security/private-route.component";
+
+
+import {createBrowserHistory} from "history";
+
+const history = createBrowserHistory();
 
 // https://demos.creative-tim.com/material-dashboard/examples/dashboard.html
-const App: React.FC<{showSideNav?: boolean}> = (props: {showSideNav?: boolean}) => {
+const App: React.FC = () => {
   return (
-      <div className={`wrapper ${props.showSideNav ? 'nav-open' : ''}`}>
-        <Sidenav/>
-        <div className='main-panel'>
-          <NavBar/>
-          <div className="content">
-            <div className="card">
-              <div className="card-header card-header-primary">
-                <h4 className="card-title">Тестовая карточка</h4>
-                <p className="card-category">Напишите что-нибудь</p>
-              </div>
-              <div className="card-body">
-              </div>
-            </div>
-          </div>
-          <Footer/>
-        </div>
+      <Router history={history}>
+        <Switch>
+          <Route path="/login" component={Login}/>
+          <PrivateRoute path="/" component={MainComponent}/>
+        </Switch>
 
-
-      </div>
+      </Router>
   );
 };
 
+export default App;
 
-function mapStateToProps(state: GlobalStore)
-{
-  return {showSideNav: state.ui.showSideNav}
-}
 
-export default connect(mapStateToProps)(App)

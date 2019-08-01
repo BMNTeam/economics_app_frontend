@@ -1,7 +1,17 @@
-import React from "react";
+import React, {MouseEvent, useState} from "react";
 import "./login.component.scss";
+import {FormValidator} from "../shared/validator/form-validator.component";
+import InputValidator from "../shared/validator/input-validator.component";
+import {ValidatorComponent} from "../shared/validator/validator.component";
 
 const Login:React.FC = () => {
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+
+  function submit (e: MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+  }
+
   return (
     <div className={'login-wrapper'}>
       <div className="content">
@@ -11,19 +21,19 @@ const Login:React.FC = () => {
             <p className="card-category">Введите данные для авторизации</p>
           </div>
           <div className="card-body">
-            <div className="form-group bmd-form-group is-focused">
-              <label className="bmd-label-floating">Имя пользователя</label>
-              <input name={'username'} type="text" className="form-control"/>
-            </div>
-            <br/>
-            <div className="form-group bmd-form-group is-focused">
-              <label className="bmd-label-floating">Пароль</label>
-              <input name={'password'} type="text" className="form-control"/>
-            </div>
+            <FormValidator onSubmit={(e) => submit(e)}>
+              <ValidatorComponent label="Имя пользователя"
+                                  state={userName}
+                                  setState={setUserName}
+                                  validators={'required'}>
+                <InputValidator  />
+              </ValidatorComponent>
+              <ValidatorComponent label="Пароль" type="password" state={password} setState={setPassword} validators={'required'}>
+                <InputValidator  />
+              </ValidatorComponent>
 
-            <button type="submit" className="btn btn-primary pull-right">Авторизоваться
-              <div className="ripple-container"/>
-            </button>
+
+            </FormValidator>
           </div>
         </div>
       </div>

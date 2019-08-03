@@ -18,6 +18,7 @@ function mapStateToProps(state: GlobalStore)
   return {isLogged: state.auth.isLogged}
 }
 
+
 export default connect(mapStateToProps)(PrivateRoute)
 
 

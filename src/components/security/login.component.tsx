@@ -1,15 +1,23 @@
+import {AxiosBasicCredentials} from "axios";
 import React, {MouseEvent, useState} from "react";
 import "./login.component.scss";
+import {connect} from "react-redux";
+import {ThunkDispatch} from "redux-thunk";
+import {ActionPayload} from "../../shared";
+import {GlobalStore} from "../../store";
 import {FormValidator} from "../shared/validator/form-validator.component";
 import InputValidator from "../shared/validator/input-validator.component";
 import {ValidatorComponent} from "../shared/validator/validator.component";
+import {logIn} from "./auth.actions";
 
-const Login:React.FC = () => {
-  const [userName, setUserName] = useState("");
+const Login:React.FC<{loginUser: (data: AxiosBasicCredentials) => void}> = (props) => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   function submit (e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
+    props.loginUser({username, password});
+
   }
 
   return (
@@ -23,8 +31,8 @@ const Login:React.FC = () => {
           <div className="card-body">
             <FormValidator onSubmit={(e) => submit(e)}>
               <ValidatorComponent label="Имя пользователя"
-                                  state={userName}
-                                  setState={setUserName}
+                                  state={username}
+                                  setState={setUsername}
                                   validators={'required'}>
                 <InputValidator  />
               </ValidatorComponent>
@@ -41,4 +49,8 @@ const Login:React.FC = () => {
   )
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch: ThunkDispatch<GlobalStore, null, ActionPayload<string>>) =>({
+  loginUser: (data: AxiosBasicCredentials) => dispatch(logIn(data))
+});
+
+export default connect(null, mapDispatchToProps)(Login);

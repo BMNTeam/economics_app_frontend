@@ -1,4 +1,6 @@
 import React from "react";
+import {Route, Router} from "react-router";
+import {Link} from "react-router-dom";
 
 const Sidenav: React.FC  = () => {
   return (
@@ -12,10 +14,11 @@ const Sidenav: React.FC  = () => {
         <div className="sidebar-wrapper">
           <ul className="nav">
             <li className="nav-item active  ">
-              <a className="nav-link" href="./dashboard.html">
-                <i className="material-icons">dashboard</i>
-                <p>Главная</p>
-              </a>
+              <Link to="/" className="nav-link">
+                  <i className="material-icons">dashboard</i>
+                  <p>Главная</p>
+              </Link>
+
             </li>
             {/*<li className="nav-item ">
               <a className="nav-link" href="./user.html">

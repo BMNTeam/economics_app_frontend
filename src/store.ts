@@ -1,4 +1,5 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
+import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import {AuthReducer, AuthState} from "./components/security/auth.reducer";
 import {UIReducer} from "./components/sidenav/sidenav.reducer";
@@ -17,4 +18,4 @@ export interface UI {
   showSideNav?: boolean
 }
 
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+export const store = createStore(rootReducer,composeWithDevTools( applyMiddleware(thunk)));

@@ -1,5 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
+import {Route, Switch} from "react-router";
+import AddData from "../features/add-data/add-data.component";
 import {GlobalStore} from "../store";
 import Footer from "./footer/footer";
 import NavBar from "./nav-bar/nav-bar-component";
@@ -12,14 +14,10 @@ export const MainComponent: React.FC<{showSideNav?: boolean}> = (props) => {
       <div className='main-panel'>
         <NavBar/>
         <div className="content">
-          <div className="card">
-            <div className="card-header card-header-primary">
-              <h4 className="card-title">Тестовая карточка</h4>
-              <p className="card-category">Напишите что-нибудь</p>
-            </div>
-            <div className="card-body">
-            </div>
-          </div>
+          <Switch>
+            <Route path={"/"} component={AddData}/>
+
+          </Switch>
         </div>
         <Footer/>
       </div>

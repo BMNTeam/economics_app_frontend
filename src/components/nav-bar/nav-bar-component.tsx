@@ -1,16 +1,20 @@
 import React from "react";
 import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 import {ThunkDispatch} from "redux-thunk";
 import {ActionPayload} from "../../shared";
 import {GlobalStore} from "../../store";
+import {logOut} from "../security/auth.actions";
+import DropdownMenuItem, {MenuElement} from "../shared/dropdown/dropdown-menu-item.component";
 import {toggleSideNav} from "../sidenav/sidenav.actions";
 
-const NavBar: React.FC<{toggleSideNav: () => void}> = (props) => {
+const NavBar: React.FC<{toggleSideNav: () => void; logOut: () => void}> = (props) => {
+  const userMenuItems: MenuElement[] = [{label: "Выход", action: () => props.logOut()}];
   return(
     <nav className="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
       <div className="container-fluid">
         <div className="navbar-wrapper">
-          <a className="navbar-brand" href="/">Добро пожаловать</a>
+          <a className="navbar-brand" href="/">ГИС Технологии</a>
         </div>
         <button  className="navbar-toggler" type="button" onClick={props.toggleSideNav} data-toggle="collapse" aria-controls="navigation-index"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -55,21 +59,7 @@ const NavBar: React.FC<{toggleSideNav: () => void}> = (props) => {
                 <a className="dropdown-item" href="/">Another One</a>
               </div>
             </li>
-            <li className="nav-item dropdown">
-              <a className="nav-link" href="/" id="navbarDropdownProfile" data-toggle="dropdown"
-                 aria-haspopup="true" aria-expanded="false">
-                <i className="material-icons">person</i>
-                <p className="d-lg-none d-md-block">
-                  Account
-                </p>
-              </a>
-              <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-                <a className="dropdown-item" href="/">Profile</a>
-                <a className="dropdown-item" href="/">Settings</a>
-                <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="/">Log out</a>
-              </div>
-            </li>
+            <DropdownMenuItem icon="person" items={userMenuItems}/>
           </ul>
         </div>
       </div>
@@ -78,7 +68,8 @@ const NavBar: React.FC<{toggleSideNav: () => void}> = (props) => {
 };
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<GlobalStore, null, ActionPayload<string>>) => ({
-  toggleSideNav: () => dispatch(toggleSideNav())
+  toggleSideNav: () => dispatch(toggleSideNav()),
+  logOut: bindActionCreators(logOut, dispatch)
 });
 
 export default connect(null, mapDispatchToProps)(NavBar)

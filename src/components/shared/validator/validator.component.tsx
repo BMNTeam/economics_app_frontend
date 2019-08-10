@@ -1,4 +1,5 @@
 import React, {ReactElement, useState} from "react";
+import {defineClassName} from "../../../shared";
 import {FormValidatorProps} from "./form-validator.component";
 import RequiredValidator from "./helpers/required-validator.component";
 
@@ -40,11 +41,4 @@ export const ValidatorComponent: React.FC<ValidatorProps> = (props) => {
       </div>
     </div>
   )
-};
-
-
-
-
-const defineClassName = (names: string, add: string, shouldAdd: () => boolean) => {
-  return shouldAdd() ? names + " " + add : names;
 };

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import './App.scss';
 import {connect} from "react-redux";
 import {Route, Router, Switch} from "react-router";
@@ -10,6 +10,7 @@ import {checkIfTokenExist} from "./security/auth.actions";
 import Login from "./security/login.component";
 import PrivateRoute from "./security/private-route.component";
 import "../axious.default-headers";
+import "../axious.interceptors";
 
 
 import {createBrowserHistory} from "history";

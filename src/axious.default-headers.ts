@@ -1,13 +1,18 @@
 import axious from "axios";
-import {localStorageUrl} from "./components/security/auth.actions";
+export const localStorageUrl = "token";
 
 const token = localStorage.getItem(localStorageUrl);
 
 if (token)
 {
-  /* tslint:disable:no-string-literal */
-  axious.defaults.headers['Authorization'] = `Bearer ${token}`
+  setAuthHeader(token);
 } else
 {
   delete axious.defaults.headers['Authorization'];
+}
+
+export function setAuthHeader(token: string)
+{
+  /* tslint:disable:no-string-literal */
+  axious.defaults.headers['Authorization'] = `Bearer ${token}`
 }

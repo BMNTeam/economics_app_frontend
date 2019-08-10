@@ -1,6 +1,7 @@
 import axios, {AxiosBasicCredentials} from "axios";
 
 import {Dispatch} from "react";
+import {localStorageUrl, setAuthHeader} from "../../axious.default-headers";
 import {ActionPayload} from "../../shared";
 import {history} from "../App";
 
@@ -8,7 +9,6 @@ export const CHECK_IF_TOKEN_EXIST = "CHECK_IF_TOKEN_EXIST";
 export const LOG_OUT = "LOG_OUT";
 export const LOG_IN = "LOG_IN";
 
-export const localStorageUrl = "token";
 
 
 export const checkIfTokenExist = () => {
@@ -22,9 +22,10 @@ export const checkIfTokenExist = () => {
 };
 
 export const logOut = () => {
-  return async(dispatch: Dispatch<ActionPayload<undefined>>) => {
+  return async (dispatch: Dispatch<ActionPayload<undefined>>) => {
     localStorage.removeItem(localStorageUrl);
-    dispatch({
+    history.push("/login");
+    return dispatch({
       type: LOG_OUT
     });
   }
@@ -32,7 +33,7 @@ export const logOut = () => {
 
 export const logIn = (credentials: AxiosBasicCredentials) => {
   return async(dispatch: Dispatch<ActionPayload<string>>) => {
-    const resp = await axios.post<{token: string} | null>(<string>process.env.REACT_APP_API_LOGIN, credentials);
+    const resp = await axios.post<{token: string} | null>(process.env.REACT_APP_API_LOGIN as string, credentials);
 
     if(resp.status === 200 && resp.data)
     {
@@ -41,6 +42,7 @@ export const logIn = (credentials: AxiosBasicCredentials) => {
         type: LOG_IN,
         payload: resp.data.token
       });
+      setAuthHeader(resp.data.token);
       history.push("/");
       return;
     }

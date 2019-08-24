@@ -25,3 +25,5 @@ yarn-error.log*
 /.idea/modules.xml
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/economics_app_frontend.iml
+/.idea/.gitignore
+/.idea/vcs.xml

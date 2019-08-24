@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {ThunkDispatch} from "redux-thunk";
@@ -6,10 +6,20 @@ import {ActionPayload} from "../../shared";
 import {GlobalStore} from "../../store";
 import {logOut} from "../security/auth.actions";
 import DropdownMenuItem, {MenuElement} from "../shared/dropdown/dropdown-menu-item.component";
+import {removeNotification} from "../shared/notification/notification.actions";
+import {NotificationComponent} from "../shared/notification/notification.component";
+import {NotificationsState} from "../shared/notification/notification.reducer";
 import {toggleSideNav} from "../sidenav/sidenav.actions";
 
-const NavBar: React.FC<{toggleSideNav: () => void; logOut: () => void}> = (props) => {
+interface NavBarProps {
+  toggleSideNav: () => void;
+  logOut: () => void;
+  removeNotification: (i: number) => void;
+  notifications: NotificationsState
+}
+const NavBar: React.FC<NavBarProps> = (props) => {
   const userMenuItems: MenuElement[] = [{label: "Выход", action: () => props.logOut()}];
+
   return(
     <nav className="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
       <div className="container-fluid">
@@ -60,6 +70,13 @@ const NavBar: React.FC<{toggleSideNav: () => void; logOut: () => void}> = (props
               </div>
             </li>
             <DropdownMenuItem icon="person" items={userMenuItems}/>
+            {!!props.notifications.data.length && props.notifications.data
+              .map((e,i) => <NotificationComponent
+                text={e.text}
+                key={i}
+                holdCloseClick={() => props.removeNotification(i)}
+              />)
+            }
           </ul>
         </div>
       </div>
@@ -67,9 +84,14 @@ const NavBar: React.FC<{toggleSideNav: () => void; logOut: () => void}> = (props
   )
 };
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<GlobalStore, null, ActionPayload<string>>) => ({
+const mapStateToProps = (state: GlobalStore) => {
+  return {notifications: state.notifications}
+};
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<GlobalStore, null, ActionPayload<string | number>>) => ({
   toggleSideNav: () => dispatch(toggleSideNav()),
-  logOut: bindActionCreators(logOut, dispatch)
+  logOut: bindActionCreators(logOut, dispatch),
+  removeNotification: (i: number) => dispatch(removeNotification(i))
 });
 
-export default connect(null, mapDispatchToProps)(NavBar)
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar)

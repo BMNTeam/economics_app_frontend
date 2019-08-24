@@ -1,0 +1,17 @@
+.notification-wrapper {
+  display: inline-block;
+  margin: 15px auto;
+  position: fixed;
+  transition: all 0.5s ease-in-out 0s;
+  z-index: 1031;
+  top: 20px;
+  right: 20px;
+}
+
+.close-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -9px;
+  z-index: 1033;
+}

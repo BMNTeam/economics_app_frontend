@@ -1,68 +1,42 @@
-import React from "react";
-import {Route, Router} from "react-router";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
+import {defineClassName} from "../../shared";
+
+
+interface SidenavLink {
+  name: string;
+  icon: string;
+  to: string;
+}
+const links: SidenavLink[] = [
+  {name: "Главная", icon: "dashboard", to: "/"},
+  {name: "Добавление", icon: "content_paste", to: "add-data"},
+  {name: "О нас", icon: "info", to: "about"}
+];
 
 const Sidenav: React.FC  = () => {
+  const [selected, setSelected] = useState(0);
+
   return (
       <div className="sidebar" data-color="purple" data-background-color="white"
            data-image="../assets/img/sidebar-1.jpg">
         <div className="logo">
-          <a href={"/"} className="simple-text logo-normal">
-            АИС Экономика
-          </a>
+          <span className="simple-text logo-normal">
+            АГРО-ПРОДУКТИВНОСТЬ
+          </span>
         </div>
         <div className="sidebar-wrapper">
           <ul className="nav">
-            <li className="nav-item active  ">
-              <Link to="/" className="nav-link">
-                  <i className="material-icons">dashboard</i>
-                  <p>Главная</p>
-              </Link>
-
-            </li>
-            {/*<li className="nav-item ">
-              <a className="nav-link" href="./user.html">
-                <i className="material-icons">person</i>
-                <p>User Profile</p>
-              </a>
-            </li>
-            <li className="nav-item ">
-              <a className="nav-link" href="./tables.html">
-                <i className="material-icons">content_paste</i>
-                <p>Table List</p>
-              </a>
-            </li>
-            <li className="nav-item ">
-              <a className="nav-link" href="./typography.html">
-                <i className="material-icons">library_books</i>
-                <p>Typography</p>
-              </a>
-            </li>
-            <li className="nav-item ">
-              <a className="nav-link" href="./icons.html">
-                <i className="material-icons">bubble_chart</i>
-                <p>Icons</p>
-              </a>
-            </li>
-            <li className="nav-item ">
-              <a className="nav-link" href="./map.html">
-                <i className="material-icons">location_ons</i>
-                <p>Maps</p>
-              </a>
-            </li>
-            <li className="nav-item ">
-              <a className="nav-link" href="./notifications.html">
-                <i className="material-icons">notifications</i>
-                <p>Notifications</p>
-              </a>
-            </li>
-            <li className="nav-item ">
-              <a className="nav-link" href="./rtl.html">
-                <i className="material-icons">language</i>
-                <p>RTL Support</p>
-              </a>
-            </li>*/}
-
+            {links.map((e, i) =>
+                <li className={
+                  defineClassName("nav-item", "active", () => selected === i)
+                } key={i}>
+                  <Link to={e.to} onClick={() => setSelected(i)} className="nav-link">
+                    <i className="material-icons">{e.icon}</i>
+                    <p>{e.name}</p>
+                  </Link>
+                </li>
+            )}
           </ul>
         </div>
       </div>

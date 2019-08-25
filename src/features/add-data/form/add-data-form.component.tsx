@@ -1,4 +1,4 @@
-import React, {ChangeEvent, ReactElement} from "react";
+import React, {ChangeEvent, ReactElement, useEffect} from "react";
 import {connect} from "react-redux";
 import {AddDataUpdateRequest} from "../../../models/add-data-update.request";
 import {Culture, CulturesResp} from "../../../models/cultures";
@@ -11,7 +11,11 @@ export const AddDataTable: React.FC<AddDataTableProps> = (props) =>
 {
   const {municipality, cultures, stat_type, years} = props.cultures;
   const groupsNameHash = Object.keys(cultures).reduce((acc, cur) => (acc[cur] = cur, acc), {} as Record<string, string>);
-  const ungroupedCultures = getUngroupedCultures(cultures);
+  let ungroupedCultures = getUngroupedCultures(cultures);
+
+  useEffect(() => {
+    ungroupedCultures = getUngroupedCultures(cultures);
+  }, [municipality, stat_type, years]);
 
   function holdSubmit(e: ChangeEvent<HTMLFormElement>)
   {
@@ -23,13 +27,13 @@ export const AddDataTable: React.FC<AddDataTableProps> = (props) =>
 
   const isGroupName = (name: string) => !!groupsNameHash[name];
   return (
-    <div className="card">
+    <div className="card add-data-form-component">
       <div className="card-body">
         <h4>Ввод данных для {municipality.name} ({stat_type.name}, {stat_type.unit})</h4>
 
         <form onSubmit={holdSubmit}>
-          <div className="table-responsive">
-            <table className="table table-hover">
+          <div className="table-responsive fixed-height">
+            <table className="table table-hover ">
               <thead className=" text-primary">
               <tr>
                 <th></th>
@@ -37,21 +41,26 @@ export const AddDataTable: React.FC<AddDataTableProps> = (props) =>
               </tr>
               </thead>
               <tbody>
-              {ungroupedCultures.map((e, i) => <tr key={i}>
+              {ungroupedCultures.map((c, i) => <tr key={i}>
                 <td>
                   <span
-                    className={defineClassName("", "nested-row", () => !isGroupName(e.name))}>{!isGroupName(e.name) ? e.name.toLowerCase() : `${e.name} - всего`}</span>
+                    className={defineClassName("", "nested-row", () => !isGroupName(c.name))}>{!isGroupName(c.name) ? c.name.toLowerCase() : `${c.name} - всего`}</span>
                 </td>
                 <td>
                   <div className="form-group bmd-form-group">
-                    <input name={`${e.id};${years[0].id}`} type="number" step="0.01" defaultValue={!!e.value && e.value.toString() || ""} className="form-control"/>
+                    <input name={`${c.id};${years[0].id}`}
+                           key={Math.random()}
+                           placeholder={stat_type.unit}
+                           type="number" step="0.01"
+                           defaultValue={(!!c.value && c.value.toString()) || ""}
+                           className="form-control"/>
                   </div>
                 </td>
               </tr>)}
               </tbody>
             </table>
           </div>
-          <button>Отправить</button>
+          <button className="btn btn-primary pull-right">Сохранить</button>
 
         </form>
       </div>

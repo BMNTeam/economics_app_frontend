@@ -1,7 +1,14 @@
-.nested-row {
-  padding-left: 20px;
-}
+.add-data-form-component {
+  .nested-row {
+    padding-left: 20px;
+  }
 
-tr > td {
-  padding: 0!important;
+  tr > td {
+    padding: 0!important;
+  }
+
+  .fixed-height {
+    overflow: auto;
+    height: 50vh;
+  }
 }

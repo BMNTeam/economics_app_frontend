@@ -1,5 +1,6 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {connect} from "react-redux";
+import {Link} from "react-router-dom";
 import {bindActionCreators} from "redux";
 import {ThunkDispatch} from "redux-thunk";
 import {ActionPayload} from "../../shared";
@@ -10,6 +11,9 @@ import {removeNotification} from "../shared/notification/notification.actions";
 import {NotificationComponent} from "../shared/notification/notification.component";
 import {NotificationsState} from "../shared/notification/notification.reducer";
 import {toggleSideNav} from "../sidenav/sidenav.actions";
+import "./nav-bar.component.scss"
+
+
 
 interface NavBarProps {
   toggleSideNav: () => void;
@@ -24,7 +28,10 @@ const NavBar: React.FC<NavBarProps> = (props) => {
     <nav className="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
       <div className="container-fluid">
         <div className="navbar-wrapper">
-          <a className="navbar-brand" href="/">ГИС Технологии</a>
+
+          <Link to="about">
+           <span className="navbar-brand unstyled-link" >ГИС Технологии</span>
+         </Link>
         </div>
         <button  className="navbar-toggler" type="button" onClick={props.toggleSideNav} data-toggle="collapse" aria-controls="navigation-index"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -52,23 +59,6 @@ const NavBar: React.FC<NavBarProps> = (props) => {
                 </p>
               </a>
             </li>*/}
-            <li className="nav-item dropdown">
-              <a className="nav-link" href="/" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                 aria-haspopup="true" aria-expanded="false">
-                <i className="material-icons">notifications</i>
-                <span className="notification">5</span>
-                <p className="d-lg-none d-md-block">
-                  Some Actions
-                </p>
-              </a>
-              <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                <a className="dropdown-item" href="/">Mike John responded to your email</a>
-                <a className="dropdown-item" href="/">You have 5 new tasks</a>
-                <a className="dropdown-item" href="/">You're now friend with Andrew</a>
-                <a className="dropdown-item" href="/">Another Notification</a>
-                <a className="dropdown-item" href="/">Another One</a>
-              </div>
-            </li>
             <DropdownMenuItem icon="person" items={userMenuItems}/>
             {!!props.notifications.data.length && props.notifications.data
               .map((e,i) => <NotificationComponent

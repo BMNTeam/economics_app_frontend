@@ -1,6 +1,7 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {ThunkDispatch} from "redux-thunk";
+import SelectComponent from "../../components/shared/select/select.component";
 import {AddDataOptions} from "../../models/add-data-options";
 import {AddDataUpdateRequest} from "../../models/add-data-update.request";
 import {BaseItem} from "../../models/base-item";
@@ -77,38 +78,23 @@ const AddData: React.FC<AddDataProps> = (props) =>
 
           <div className="row">
             <div className="col-md-4">
-              <div className="form-group">
-                <label className="">Выберите регион</label> <br/>
-                <select className="form-control" onChange={municipalityChanged}>
-                  {municipalities && municipalities.map((e, i) =>
-                    <option value={e.id} key={i}> {e.name}</option>)}
-                </select>
-              </div>
+              <SelectComponent action={municipalityChanged} label="Выберите регион" options={municipalities}/>
             </div>
 
             {
               !!municipality &&
               <div className="col-md-4">
-                <div className="form-group bmd-form-group">
-                  <label>Выберите год</label> <br/>
-                  <select className="form-control" onChange={yearChanged}>
-                    {years  && years.map((e, i) =>
-                      <option value={e.id} key={i}> {e.name}</option>)}
-                  </select>
-                </div>
+                <SelectComponent action={yearChanged} options={years} label="Выберите год"/>
               </div>
             }
 
             {
               !!year &&
               <div className="col-md-4">
-                <div className="form-group bmd-form-group">
-                  <label>Выберите показатель</label> <br/>
-                  <select className="form-control" onChange={changedStatType}>
-                    {statTypes  && statTypes.map((e, i) =>
-                      <option value={e.id} key={i}> {e.name} ({e.unit})</option>)}
-                  </select>
-                </div>
+                <SelectComponent action={changedStatType}
+                                 label="Выберите показатель"
+                                 options={statTypes.map(v => ({...v, name: `${v.name} (${v.unit})`}))}
+                />
               </div>
             }
           </div>
@@ -116,7 +102,9 @@ const AddData: React.FC<AddDataProps> = (props) =>
 
         </div>
       </div>
-      {props.cultures && statType &&  <AddDataTable cultures={props.cultures} handleSubmit={handleSubmit}/>}
+      {props.cultures && statType &&  <AddDataTable
+          cultures={props.cultures} handleSubmit={handleSubmit}/>
+      }
     </div>
   )
 };

@@ -1,5 +1,6 @@
 import axios from "axios";
 import {Dispatch} from "react";
+import {ADD_NOTIFICATION} from "../../components/shared/notification/notification.actions";
 import {AddDataOptions} from "../../models/add-data-options";
 import {AddDataUpdateRequest} from "../../models/add-data-update.request";
 import {CulturesResp} from "../../models/cultures";
@@ -38,11 +39,15 @@ export const receiveCulturesWithData = (params: CulturesParams) => {
 
 export const UPDATE_CULTURES = "UPDATE_CULTURES";
 export const updateCultures = (data: AddDataUpdateRequest) => {
-  return async (dispatch: Dispatch<ActionPayload<AddDataUpdateRequest>>) => {
+  return async (dispatch: Dispatch<ActionPayload<AddDataUpdateRequest | string>>) => {
     const resp = await axios.put(process.env.REACT_APP_ADD_DATA as string, {data});
     dispatch({
       type: UPDATE_CULTURES,
       payload: resp.data
+    });
+    dispatch({
+      type: ADD_NOTIFICATION,
+      payload: "Данные успешно обновленны"
     });
   }
 };

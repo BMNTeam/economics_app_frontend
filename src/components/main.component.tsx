@@ -7,14 +7,18 @@ import {GlobalStore} from "../store";
 import Footer from "./footer/footer";
 import NavBar from "./nav-bar/nav-bar-component";
 import Sidenav from "./sidenav/sidenav-component";
+import Background from "./background.jpg";
 
+import "./main.component.scss";
 export const MainComponent: React.FC<{showSideNav?: boolean}> = (props) => {
   return (
     <div className={`wrapper ${props.showSideNav ? 'nav-open' : ''}`}>
       <Sidenav/>
       <div className='main-panel'>
         <NavBar/>
+
         <div className="content">
+          <img className="image" src={Background}/>
           <Switch>
             <Route path={"/add-data"} component={AddData} />
             <Route path={"/"} component={HomeComponent} exact={true}/>

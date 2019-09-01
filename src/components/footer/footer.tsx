@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 const Footer: React.FC = () => {
   return(
@@ -7,14 +8,14 @@ const Footer: React.FC = () => {
         <nav className="float-left">
           <ul>
             <li>
-              <a href="https://www.sniish.ru">
+              <a href="https://fnac.center">
                 СНИИСХ
               </a>
             </li>
             <li>
-              <a href="/about">
-                О нас
-              </a>
+              <Link to="about">
+                <a >О нас</a>
+              </Link>
             </li>
           </ul>
         </nav>

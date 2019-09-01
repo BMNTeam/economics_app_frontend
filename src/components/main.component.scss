@@ -1,0 +1,15 @@
+.main-panel {
+  .content {
+    overflow: hidden;
+    position: relative;
+  }
+  .image {
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    background-image: url("background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(20px) grayscale(80%);
+  }
+}

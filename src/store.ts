@@ -5,11 +5,13 @@ import {AuthReducer, AuthState} from "./components/security/auth.reducer";
 import NotificationsReducer, {NotificationsState} from "./components/shared/notification/notification.reducer";
 import {UIReducer} from "./components/sidenav/sidenav.reducer";
 import {AddDataReducer, AddDataState} from "./features/add-data/add-data.reducer";
+import {HomeReducer, HomeState} from "./features/home/home.reducer";
 
 export interface GlobalStore {
   ui: UI,
   auth: AuthState,
   addData: AddDataState,
+  home: HomeState,
   notifications: NotificationsState
 }
 
@@ -17,6 +19,7 @@ const rootReducer = combineReducers({
   ui: UIReducer,
   auth: AuthReducer,
   addData: AddDataReducer,
+  home: HomeReducer,
   notifications: NotificationsReducer
 } as any);
 

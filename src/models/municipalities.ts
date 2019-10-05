@@ -2,6 +2,7 @@ import {BaseItem} from "./base-item";
 import {StatType} from "./stat-type";
 
 export interface MunicipalitiesResp {
+  farm_category: BaseItem
   years: BaseItem[];
   culture: BaseItem;
   stat_type: StatType;

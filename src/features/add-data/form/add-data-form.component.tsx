@@ -112,6 +112,7 @@ class AddDataRequest {
     return {
       cultureId: this.props.municipalities.culture.id,
       statTypeId: this.props.municipalities.stat_type.id,
+      farmCategoryId: this.props.municipalities.farm_category.id,
       data: Object.entries(elements).map(([k,v]) => ({yearId: +k, municipalities: v}))
     }
   }

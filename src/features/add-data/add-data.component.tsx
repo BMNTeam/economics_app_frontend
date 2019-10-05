@@ -20,7 +20,7 @@ interface AddDataProps {
   municipalities: BaseItem[];
   farmCategories: BaseItem[];
   statTypes: StatType[];
-  cultures: CulturesResp;
+  cultures: BaseItem[];
 }
 
 const AddData: React.FC<AddDataProps> = (props) =>
@@ -32,10 +32,10 @@ const AddData: React.FC<AddDataProps> = (props) =>
     }
   }, []);
 
-  const [municipality, setMunicipality] = useState(0);
-  const municipalityChanged = (event: ChangeEvent<HTMLSelectElement>) =>
+  const [culture, setCulture] = useState(0);
+  const cultureChanged = (event: ChangeEvent<HTMLSelectElement>) =>
   {
-    setMunicipality(+event.target.value);
+    setCulture(+event.target.value);
   };
 
   const [year, setYear] = useState();
@@ -50,10 +50,16 @@ const AddData: React.FC<AddDataProps> = (props) =>
     setStatType(e.target.value);
   }
 
+  const [farmCategory, setFarmCategory] = useState();
+  function changedFarmCategory(e: ChangeEvent<HTMLSelectElement>)
+  {
+    setFarmCategory(e.target.value);
+  }
+
   function tryGetAllCultures()
   {
-    if(!municipality || !year || !statType) return;
-    const culturesParams: CulturesParams = {municipalityId: municipality, yearId: year, statType};
+    if(!culture || !year || !statType || !farmCategory) return;
+    const culturesParams: CulturesParams = {municipalityId: culture, yearId: year, statType, farmCategory};
     props.getAllCulturesWithData(culturesParams);
   }
 
@@ -64,9 +70,9 @@ const AddData: React.FC<AddDataProps> = (props) =>
 
   useEffect(() => {
     tryGetAllCultures();
-  }, [municipality, year, statType]);
+  }, [culture, year, statType, farmCategory]);
 
-  const {municipalities, years, statTypes} = props;
+  const {cultures, years, statTypes, farmCategories} = props;
   return (
     <div>
       <div className="card">
@@ -77,23 +83,33 @@ const AddData: React.FC<AddDataProps> = (props) =>
         <div className="card-body">
 
           <div className="row">
-            <div className="col-md-4">
-              <SelectComponent action={municipalityChanged} label="Выберите регион" options={municipalities}/>
+            <div className="col-md-3">
+              <SelectComponent action={cultureChanged} label="Выберите культуру" options={cultures}/>
             </div>
 
             {
-              !!municipality &&
-              <div className="col-md-4">
+              !!culture &&
+              <div className="col-md-3">
                 <SelectComponent action={yearChanged} options={years} label="Выберите год"/>
               </div>
             }
 
             {
               !!year &&
-              <div className="col-md-4">
+              <div className="col-md-3">
                 <SelectComponent action={changedStatType}
                                  label="Выберите показатель"
                                  options={statTypes.map(v => ({...v, name: `${v.name} (${v.unit})`}))}
+                />
+              </div>
+            }
+
+            {
+              !!statType &&
+              <div className="col-md-3">
+                <SelectComponent action={changedFarmCategory}
+                                 label="Выберите категорию хозяйств"
+                                 options={farmCategories}
                 />
               </div>
             }
@@ -102,9 +118,9 @@ const AddData: React.FC<AddDataProps> = (props) =>
 
         </div>
       </div>
-      {props.cultures && statType &&  <AddDataTable
-          cultures={props.cultures} handleSubmit={handleSubmit}/>
-      }
+      {/*{props.cultures && statType &&  <AddDataTable*/}
+      {/*    cultures={props.cultures} handleSubmit={handleSubmit}/>*/}
+      {/*}*/}
     </div>
   )
 };
@@ -117,7 +133,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<GlobalStore, null, ActionPay
 
 const mapStateToProps = (state: GlobalStore) => ({
   years: state.addData.years,
-  municipalities: state.addData.municipalities,
+  // municipalities: state.addData.municipalities,
   farmCategories: state.addData.farm_categories,
   statTypes: state.addData.stat_types,
   cultures: state.addData.cultures

@@ -22,6 +22,7 @@ export interface CulturesParams {
   municipalityId: number;
   yearId: number;
   statType: number;
+  farmCategory: number;
 }
 export const RECEIVE_CULTURES_WITH_DATA = "RECEIVE_CULTURES_WITH_DATA";
 export const receiveCulturesWithData = (params: CulturesParams) => {

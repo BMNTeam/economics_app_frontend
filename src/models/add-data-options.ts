@@ -3,7 +3,7 @@ import {StatType} from "./stat-type";
 
 export interface AddDataOptions {
   years: BaseItem[];
-  municipalities: BaseItem[];
+  cultures: BaseItem[];
   farm_categories: BaseItem[];
   stat_types: StatType[];
 }

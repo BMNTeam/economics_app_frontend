@@ -3,7 +3,7 @@ import {Dispatch} from "react";
 import {ADD_NOTIFICATION} from "../../components/shared/notification/notification.actions";
 import {AddDataOptions} from "../../models/add-data-options";
 import {AddDataUpdateRequest} from "../../models/add-data-update.request";
-import {CulturesResp} from "../../models/cultures";
+import {MunicipalitiesResp} from "../../models/municipalities";
 import {ActionPayload} from "../../shared";
 
 
@@ -24,14 +24,14 @@ export interface CulturesParams {
   statType: number;
   farmCategory: number;
 }
-export const RECEIVE_CULTURES_WITH_DATA = "RECEIVE_CULTURES_WITH_DATA";
+export const RECEIVE_MUNICIPALITIES_WITH_DATA = "RECEIVE_MUNICIPALITIES_WITH_DATA";
 export const receiveCulturesWithData = (params: CulturesParams) => {
-  return async (dispatch: Dispatch<ActionPayload<CulturesResp>>) => {
-    const resp = await axios.get<CulturesResp>(process.env.REACT_APP_ADD_MUNICIPALITIES_WITH_DATA as string, {params});
+  return async (dispatch: Dispatch<ActionPayload<MunicipalitiesResp>>) => {
+    const resp = await axios.get<MunicipalitiesResp>(process.env.REACT_APP_ADD_MUNICIPALITIES_WITH_DATA as string, {params});
     if(resp.status === 200)
     {
       dispatch({
-        type: RECEIVE_CULTURES_WITH_DATA,
+        type: RECEIVE_MUNICIPALITIES_WITH_DATA,
         payload: resp.data
       });
     }

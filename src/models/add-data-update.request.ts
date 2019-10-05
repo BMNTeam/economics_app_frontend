@@ -1,7 +1,7 @@
-import {Culture} from "./cultures";
+import {Municipality} from "./municipalities";
 
 export interface AddDataUpdateRequest {
-  municipalityId: number;
+  cultureId: number;
   statTypeId: number;
-  data: {yearId: number; cultures: Culture[]}[]
+  data: {yearId: number; municipalities: Municipality[]}[]
 }

@@ -1,13 +1,13 @@
 import {BaseItem} from "./base-item";
 import {StatType} from "./stat-type";
 
-export interface CulturesResp {
+export interface MunicipalitiesResp {
   years: BaseItem[];
-  municipality: BaseItem;
+  culture: BaseItem;
   stat_type: StatType;
-  cultures: {[key: string]: Culture[]};
+  municipalities: Municipality[];
 }
-export interface Culture {
+export interface Municipality {
   id: number;
   name: string;
   value?: number;

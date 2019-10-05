@@ -1,21 +1,17 @@
 import React, {ChangeEvent, ReactElement, useEffect} from "react";
 import {connect} from "react-redux";
 import {AddDataUpdateRequest} from "../../../models/add-data-update.request";
-import {Culture, CulturesResp} from "../../../models/cultures";
 import "./add-data-form.component.scss";
-import {defineClassName} from "../../../shared";
+import {MunicipalitiesResp, Municipality} from "../../../models/municipalities";
 
-type AddDataTableProps = { cultures: CulturesResp, handleSubmit: (params: AddDataUpdateRequest) => void }
+type AddDataTableProps = { municipalities: MunicipalitiesResp, handleSubmit: (params: AddDataUpdateRequest) => void }
 
 export const AddDataTable: React.FC<AddDataTableProps> = (props) =>
 {
-  const {municipality, cultures, stat_type, years} = props.cultures;
-  const groupsNameHash = Object.keys(cultures).reduce((acc, cur) => (acc[cur] = cur, acc), {} as Record<string, string>);
-  let ungroupedCultures = getUngroupedCultures(cultures);
+  const {municipalities, culture , stat_type, years} = props.municipalities;
 
   useEffect(() => {
-    ungroupedCultures = getUngroupedCultures(cultures);
-  }, [municipality, stat_type, years]);
+  }, [culture, stat_type, years]);
 
   function holdSubmit(e: ChangeEvent<HTMLFormElement>)
   {
@@ -23,13 +19,10 @@ export const AddDataTable: React.FC<AddDataTableProps> = (props) =>
     const data = new AddDataRequest(e.target.elements, props);
     props.handleSubmit(data.get());
   }
-
-
-  const isGroupName = (name: string) => !!groupsNameHash[name];
   return (
     <div className="card add-data-form-component">
       <div className="card-body">
-        <h4>Ввод данных для {municipality.name} ({stat_type.name}, {stat_type.unit})</h4>
+        <h4>Ввод данных для {culture.name} ({stat_type.name}, {stat_type.unit})</h4>
 
         <form onSubmit={holdSubmit}>
           <div className="table-responsive fixed-height">
@@ -41,18 +34,17 @@ export const AddDataTable: React.FC<AddDataTableProps> = (props) =>
               </tr>
               </thead>
               <tbody>
-              {ungroupedCultures.map((c, i) => <tr key={i}>
+              {municipalities.map((m, i) => <tr key={i}>
                 <td>
-                  <span
-                    className={defineClassName("", "nested-row", () => !isGroupName(c.name))}>{!isGroupName(c.name) ? c.name.toLowerCase() : `${c.name} - всего`}</span>
+                  <span>{m.name}</span>
                 </td>
                 <td>
                   <div className="form-group bmd-form-group">
-                    <input name={`${c.id};${years[0].id}`}
+                    <input name={`${m.id};${years[0].id}`}
                            key={Math.random()}
                            placeholder={stat_type.unit}
                            type="number" step="0.01"
-                           defaultValue={(!!c.value && c.value.toString()) || ""}
+                           defaultValue={(!!m.value && m.value.toString()) || ""}
                            className="form-control"/>
                   </div>
                 </td>
@@ -68,7 +60,7 @@ export const AddDataTable: React.FC<AddDataTableProps> = (props) =>
   )
 };
 
-type CultureWithYear = Culture & { yearId: number };
+type MunicipalityWithYear = Municipality & { yearId: number };
 
 class AddDataRequest {
 
@@ -78,7 +70,7 @@ class AddDataRequest {
   constructor(elements: HTMLFormControlsCollection, private props: AddDataTableProps)
   {
     this.elements = this.mutateToHtmlInputElement(elements);
-    this.culturesNamesHash = this.getCulturesNamesHash(getUngroupedCultures(props.cultures.cultures));
+    this.culturesNamesHash = this.getCulturesNamesHash(props.municipalities.municipalities);
   }
 
   get(): AddDataUpdateRequest
@@ -94,7 +86,7 @@ class AddDataRequest {
     return this.getFullRequestData(dataGroupedByYear);
   }
 
-  private extractDataFromElement(elements: HTMLInputElement[]): CultureWithYear[]
+  private extractDataFromElement(elements: HTMLInputElement[]): MunicipalityWithYear[]
   {
     return elements
       .map(e =>
@@ -104,23 +96,23 @@ class AddDataRequest {
       })
   }
 
-  private groupByYear(elements: CultureWithYear[]): Record<string, Culture[]>
+  private groupByYear(elements: MunicipalityWithYear[]): Record<string, Municipality[]>
   {
     return elements.reduce((acc, c) =>
     {
-      const culture: Culture = {id: +c.id, name: c.name, value: c.value};
+      const culture: Municipality = {id: +c.id, name: c.name, value: c.value};
       if (!acc[c.yearId]) acc[c.yearId] = [];
       acc[c.yearId] = acc[c.yearId].concat(culture);
       return acc;
-    }, {} as Record<string, Culture[]>);
+    }, {} as Record<string, Municipality[]>);
   }
 
-  private getFullRequestData(elements: Record<string, Culture[]>): AddDataUpdateRequest
+  private getFullRequestData(elements: Record<string, Municipality[]>): AddDataUpdateRequest
   {
     return {
-      municipalityId: this.props.cultures.municipality.id,
-      statTypeId: this.props.cultures.stat_type.id,
-      data: Object.entries(elements).map(([k,v]) => ({yearId: +k, cultures: v}))
+      cultureId: this.props.municipalities.culture.id,
+      statTypeId: this.props.municipalities.stat_type.id,
+      data: Object.entries(elements).map(([k,v]) => ({yearId: +k, municipalities: v}))
     }
   }
 
@@ -132,17 +124,9 @@ class AddDataRequest {
       .filter(e => e.nodeName === "INPUT") as HTMLInputElement[];
   }
 
-  private getCulturesNamesHash(cultures: Culture[])
+  private getCulturesNamesHash(cultures: Municipality[])
   {
     return cultures.reduce((acc,c) => (acc[c.id]=c.name, acc), {} as Record<string, string>);
   }
-}
-function getUngroupedCultures(cultures: {[key: string]: Culture[]})
-{
-  return Object.values(cultures).reduce((acc, cur) =>
-  {
-    acc = acc.concat(...Object.values(cur));
-    return acc;
-  }, [] as Culture[]);
 }
 export default connect()(AddDataTable)

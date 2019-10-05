@@ -5,7 +5,7 @@ import SelectComponent from "../../components/shared/select/select.component";
 import {AddDataOptions} from "../../models/add-data-options";
 import {AddDataUpdateRequest} from "../../models/add-data-update.request";
 import {BaseItem} from "../../models/base-item";
-import {CulturesResp} from "../../models/cultures";
+import {MunicipalitiesResp} from "../../models/municipalities";
 import {StatType} from "../../models/stat-type";
 import {ActionPayload} from "../../shared";
 import {GlobalStore} from "../../store";
@@ -17,7 +17,7 @@ interface AddDataProps {
   getAllCulturesWithData: (params: CulturesParams) => void;
   updateCultures: (params: AddDataUpdateRequest) => void;
   years: BaseItem[];
-  municipalities: BaseItem[];
+  municipalities: MunicipalitiesResp;
   farmCategories: BaseItem[];
   statTypes: StatType[];
   cultures: BaseItem[];
@@ -118,9 +118,9 @@ const AddData: React.FC<AddDataProps> = (props) =>
 
         </div>
       </div>
-      {/*{props.cultures && statType &&  <AddDataTable*/}
-      {/*    cultures={props.cultures} handleSubmit={handleSubmit}/>*/}
-      {/*}*/}
+      {props.municipalities && farmCategory &&  <AddDataTable
+          municipalities={props.municipalities} handleSubmit={handleSubmit}/>
+      }
     </div>
   )
 };
@@ -133,7 +133,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<GlobalStore, null, ActionPay
 
 const mapStateToProps = (state: GlobalStore) => ({
   years: state.addData.years,
-  // municipalities: state.addData.municipalities,
+  municipalities: state.addData.municipalities,
   farmCategories: state.addData.farm_categories,
   statTypes: state.addData.stat_types,
   cultures: state.addData.cultures

@@ -1,10 +1,10 @@
 import {AddDataOptions} from "../../models/add-data-options";
-import {CulturesResp} from "../../models/cultures";
+import {MunicipalitiesResp} from "../../models/municipalities";
 import {ActionPayload} from "../../shared";
-import {RECEIVE_CULTURES_WITH_DATA, RECEIVE_DATA_OPTIONS} from "./add-data.actions";
+import {RECEIVE_MUNICIPALITIES_WITH_DATA, RECEIVE_DATA_OPTIONS} from "./add-data.actions";
 
 
-export type AddDataState = AddDataOptions & {cultures: CulturesResp};
+export type AddDataState = AddDataOptions & {municipalities: MunicipalitiesResp};
 
 export function AddDataReducer(state: AddDataState = {} as AddDataState, action: ActionPayload<AddDataOptions> ){
   switch (action.type)
@@ -14,7 +14,7 @@ export function AddDataReducer(state: AddDataState = {} as AddDataState, action:
       const {cultures, years, farm_categories, stat_types} = action.payload;
       return {...state, cultures, years, farm_categories, stat_types }
     }
-    case RECEIVE_CULTURES_WITH_DATA: return {...state, cultures: action.payload};
+    case RECEIVE_MUNICIPALITIES_WITH_DATA: return {...state, municipalities: action.payload};
     default: return state;
   }
 }

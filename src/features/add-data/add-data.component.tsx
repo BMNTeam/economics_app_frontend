@@ -59,7 +59,7 @@ const AddData: React.FC<AddDataProps> = (props) =>
   function tryGetAllCultures()
   {
     if(!culture || !year || !statType || !farmCategory) return;
-    const culturesParams: CulturesParams = {municipalityId: culture, yearId: year, statType, farmCategory};
+    const culturesParams: CulturesParams = {cultureId: culture, yearId: year, statType, farmCategory};
     props.getAllCulturesWithData(culturesParams);
   }
 

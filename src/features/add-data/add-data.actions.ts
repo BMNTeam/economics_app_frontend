@@ -19,7 +19,7 @@ export const receiveAllOptions = () => {
 };
 
 export interface CulturesParams {
-  municipalityId: number;
+  cultureId: number;
   yearId: number;
   statType: number;
   farmCategory: number;
@@ -27,7 +27,7 @@ export interface CulturesParams {
 export const RECEIVE_CULTURES_WITH_DATA = "RECEIVE_CULTURES_WITH_DATA";
 export const receiveCulturesWithData = (params: CulturesParams) => {
   return async (dispatch: Dispatch<ActionPayload<CulturesResp>>) => {
-    const resp = await axios.get<CulturesResp>(process.env.REACT_APP_ADD_CULTURES_WITH_DATA as string, {params});
+    const resp = await axios.get<CulturesResp>(process.env.REACT_APP_ADD_MUNICIPALITIES_WITH_DATA as string, {params});
     if(resp.status === 200)
     {
       dispatch({

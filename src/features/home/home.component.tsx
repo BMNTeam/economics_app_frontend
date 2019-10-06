@@ -27,12 +27,9 @@ const HomeComponent: React.FC<HomeProps> = (props) => {
     setCulture(e.target.value);
   };
 
-  const setAndReturnDefaultValues = () => {
-    const cultureId = props.options.cultures[0].id;
-    const yearId = props.options.years[0].id;
-    setCulture(cultureId);
-    setYear(yearId);
-    return {cultureId, yearId};
+  const setDefaultValues = () => {
+    setCulture(props.options.cultures[0].id);
+    setYear(props.options.years[0].id);
   };
 
   useEffect( () => {
@@ -42,7 +39,7 @@ const HomeComponent: React.FC<HomeProps> = (props) => {
 
   useEffect(() => {
     if(!props.options.years) {return}
-    const {cultureId, yearId} = setAndReturnDefaultValues();
+    setDefaultValues();
 
   }, [props.options]);
 
@@ -50,16 +47,42 @@ const HomeComponent: React.FC<HomeProps> = (props) => {
     props.getStatistics({yearId: year, cultureId: culture})
   }, [year, culture]);
 
-  if (!props.statistics)
+  useEffect(() => {
+
+  }, [props.statistics])
+
+  if (!props.statistics || !props.options.years)
   {
-    return (<div></div>);
+    return (
+      <div className="row">
+        {/*TODO move to a separate component*/}
+        <div className="col-lg-3 col-md-6 col-sm-6">
+          <div className="card">
+            <div className="card-body">
+              <div className="row">
+                <div className="col-sm-6">
+                  <SelectComponent action={changedYear} label={'Год'} options={props.options.years} value={year}/></div>
+                <div className="col-sm-6"><SelectComponent action={changedCulture} label={'Культура'} options={props.options.cultures} value={culture}/></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
   const {last_data, short_statistics} = props.statistics;
-  const additional = {text: "По данным за последний год", icon: "update"};
+  const yearOption = props.options.years.find(e => e.id === year);
+  const additional = {
+    text: `По данным за ${yearOption && yearOption.name || 'последний'} год `,
+    icon: "update"
+  };
   return(
     <div>
       <div className="row">
-          <div className="col-lg-3 col-md-6 col-sm-6">
+
+        {/*TODO move to a separate component*/}
+        <div className="col-lg-3 col-md-6 col-sm-6">
             <div className="card">
               <div className="card-body">
                 <div className="row">

@@ -9,6 +9,7 @@ export interface StatisticsRequest {
 }
 
 export const GET_STATISTICS = "GET_STATISTICS";
+export const GET_STATISTICS_ERROR = "GET_STATISTICS_ERROR";
 export const getStatistics = (params: StatisticsRequest) => {
   return async (dispatch: Dispatch<ActionPayload<StatisticsResult>>) => {
 
@@ -18,6 +19,12 @@ export const getStatistics = (params: StatisticsRequest) => {
       dispatch({
         type: GET_STATISTICS,
         payload: res.data
+      })
+    }
+    if(res.request.status === 500)
+    {
+      dispatch({
+        type: GET_STATISTICS_ERROR
       })
     }
   }

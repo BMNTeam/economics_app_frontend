@@ -1,9 +1,11 @@
-import React, {useEffect} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {ThunkDispatch} from "redux-thunk";
+import SelectComponent from "../../components/shared/select/select.component";
 import {StatComponent, StatComponentProps} from "../../components/shared/stat/stat.component";
 import {ActionPayload} from "../../shared";
 import {GlobalStore} from "../../store";
-import {getStatistics} from "./home.actions";
+import {receiveAllOptions} from "../add-data/add-data.actions";
+import {getStatistics, StatisticsRequest} from "./home.actions";
 import {connect} from "react-redux";
 const stats: StatComponentProps[] = [
   {value: "331", icon: "store", category: "Всего записей", color: "card-header-info"},
@@ -13,9 +15,41 @@ const stats: StatComponentProps[] = [
 ];
 type HomeProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 const HomeComponent: React.FC<HomeProps> = (props) => {
-  useEffect(() => {
-    props.getStatistics();
+  const [year, setYear] =  useState();
+  const changedYear = (e: ChangeEvent<HTMLSelectElement>) =>
+  {
+    setYear(e.target.value);
+  };
+
+  const [culture, setCulture] = useState();
+  const changedCulture = (e: ChangeEvent<HTMLSelectElement>) =>
+  {
+    setCulture(e.target.value);
+  };
+
+  const setAndReturnDefaultValues = () => {
+    const cultureId = props.options.cultures[0].id;
+    const yearId = props.options.years[0].id;
+    setCulture(cultureId);
+    setYear(yearId);
+    return {cultureId, yearId};
+  };
+
+  useEffect( () => {
+    if(props.options.years) return;
+    props.getAllOptions();
   }, []);
+
+  useEffect(() => {
+    if(!props.options.years) {return}
+    const {cultureId, yearId} = setAndReturnDefaultValues();
+
+  }, [props.options]);
+
+  useEffect( () => {
+    props.getStatistics({yearId: year, cultureId: culture})
+  }, [year, culture]);
+
   if (!props.statistics)
   {
     return (<div></div>);
@@ -25,9 +59,17 @@ const HomeComponent: React.FC<HomeProps> = (props) => {
   return(
     <div>
       <div className="row">
-
           <div className="col-lg-3 col-md-6 col-sm-6">
-            <StatComponent icon="store" category="Всего записпей" value={`${short_statistics.total}`} color="card-header-info" additional={additional}/>
+            <div className="card">
+              <div className="card-body">
+                <div className="row">
+                  <div className="col-sm-6">
+                    <SelectComponent action={changedYear} label={'Год'} options={props.options.years} value={year}/></div>
+                  <div className="col-sm-6"><SelectComponent action={changedCulture} label={'Культура'} options={props.options.cultures} value={culture}/></div>
+                </div>
+
+              </div>
+            </div>
           </div>
 
         <div className="col-lg-3 col-md-6 col-sm-6">
@@ -78,11 +120,13 @@ const HomeComponent: React.FC<HomeProps> = (props) => {
 };
 
 const mapStateToProps = (state: GlobalStore) => ({
-  statistics: state.home.statistics
+  statistics: state.home.statistics,
+  options: state.addData
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<GlobalStore, null, ActionPayload<void>>) => ({
-  getStatistics: () => dispatch(getStatistics())
+  getStatistics: (params: StatisticsRequest) => dispatch(getStatistics(params)),
+  getAllOptions: () => dispatch(receiveAllOptions())
 });
 
 

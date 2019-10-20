@@ -41,17 +41,17 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
 
   const [region, setRegion] = useState();
   const changedRegion = (e: ChangeEvent<HTMLSelectElement>) => setRegion(e.target.value);
-  const getRegionSelect = (options: BaseItem[]) => <SelectComponent action={changedRegion}
-                                                                    label={'Район'}
-                                                                    options={options}
-                                                                    value={region}/>;
+  const regionSelect = <SelectComponent action={changedRegion}
+                                           label={'Район'}
+                                           options={props.options.regions}
+                                           value={region}/>;
 
   const [statType, setStatType] = useState();
   const changedStatType = (e: ChangeEvent<HTMLSelectElement>) => setStatType(e.target.value);
-  const getStatTypeSelect = (options: BaseItem[]) => <SelectComponent action={changedStatType}
-                                                                      label={'Показатель'}
-                                                                      options={options}
-                                                                      value={statType}/>;
+  const statTypeSelect = <SelectComponent action={changedStatType}
+                                             label={'Показатель'}
+                                             options={props.options.stat_types}
+                                             value={statType}/>;
 
   const [farmCategory, setFarmCategory] = useState();
   const changedFarmCategory = (e: ChangeEvent<HTMLSelectElement>) => setFarmCategory(e.target.value);
@@ -87,7 +87,8 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
     return culture && region && statType && farmCategory;
   };
 
-  const getFormData = () => {
+  const getFormData = () =>
+  {
     const data: AnalyzeFormData = {
       cultureId: culture,
       farmCategoryId: farmCategory,
@@ -96,9 +97,15 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
       isWithAdditionalData: false
     };
 
-    return month.length && analyzeType ? data : {...data, monthsIds: month, analyzeTypeId: analyzeType, isWithAdditionalData: true}
+    return month.length && analyzeType ? data : {
+      ...data,
+      monthsIds: month,
+      analyzeTypeId: analyzeType,
+      isWithAdditionalData: true
+    }
   };
-  const holdSubmitEvent = (e: ChangeEvent<HTMLFormElement>) => {
+  const holdSubmitEvent = (e: ChangeEvent<HTMLFormElement>) =>
+  {
     e.preventDefault();
     props.action(getFormData());
   };
@@ -112,10 +119,10 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
             {cultureSelect}
           </div>
           <div className="col-sm-3">
-            {culture && getRegionSelect([...props.options.regions, {id: 9999, name: "Ставропольский край"}])}
+            {culture && regionSelect}
           </div>
           <div className="col-sm-3">
-            {culture && region && getStatTypeSelect([...props.options.stat_types, {id: 9999, name: "Урожайность"}])}
+            {culture && region && statTypeSelect}
           </div>
           <div className="col-sm-3">
             {culture && region && statType && farmCategorySelect}

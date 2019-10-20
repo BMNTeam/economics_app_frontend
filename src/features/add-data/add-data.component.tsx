@@ -99,7 +99,7 @@ const AddData: React.FC<AddDataProps> = (props) =>
               <div className="col-md-3">
                 <SelectComponent action={changedStatType}
                                  label="Выберите показатель"
-                                 options={statTypes.map(v => ({...v, name: `${v.name} (${v.unit})`}))}
+                                 options={statTypes.map(v => ({...v, name: `${v.name} (${v.unit})`})).filter(v => v.id !== 3)}
                 />
               </div>
             }

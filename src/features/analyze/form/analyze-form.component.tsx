@@ -32,6 +32,7 @@ type AnalyzeFormProps =
 
 const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
 {
+  //#region states
   const [culture, setCulture] = useState();
   const changedCulture = (e: ChangeEvent<HTMLSelectElement>) => setCulture(e.target.value);
   const cultureSelect = <SelectComponent action={changedCulture}
@@ -75,12 +76,15 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
     }
     return setMonth([...month, id]);
   };
+  //#endregion
 
+  //#region effects
   const receiveOptionsIfNotExists = () => !(props.options && props.options.years) && props.getAllOptions();
   useEffect(() =>
   {
     receiveOptionsIfNotExists();
   });
+  //#endregion
 
   const isAnalyzeButtonActive = () =>
   {

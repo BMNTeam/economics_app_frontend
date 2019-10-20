@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {Route, Switch} from "react-router";
 import AddData from "../features/add-data/add-data.component";
-import {AnalyzeComponent} from "../features/analyze/analyze.component";
+import AnalyzeComponent from "../features/analyze/analyze.component";
 import HomeComponent from "../features/home/home.component";
 import {GlobalStore} from "../store";
 import Footer from "./footer/footer";

@@ -1,13 +1,24 @@
 import React, {useEffect, useState} from "react";
+import {connect} from "react-redux";
+import {ThunkDispatch} from "redux-thunk";
+import {ActionPayload} from "../../shared";
+import {GlobalStore} from "../../store";
+import {receiveEconomicGraphData} from "./analyze.actions";
 import AnalyzeFormComponent, {AnalyzeFormData} from "./form/analyze-form.component";
+import {AnalyzeGraphComponent} from "./graph/graph.component";
 
-const AnalyzeComponent:React.FC =  () => {
+type AnalyzeComponentProps = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
+
+const AnalyzeComponent:React.FC<AnalyzeComponentProps> =  (props) => {
   const [analyzeData, setAnalyzeData] = useState();
   const changedAnalyzedData = (d: AnalyzeFormData) => setAnalyzeData(d);
 
   useEffect(() => {
-
+    if(!analyzeData) return;
+    props.getGraphData(analyzeData);
   }, [analyzeData]);
+
+
 
   return (
     <div>
@@ -18,10 +29,25 @@ const AnalyzeComponent:React.FC =  () => {
         </div>
         <div className="card-body">
           <AnalyzeFormComponent action={changedAnalyzedData}/>
+          <br/>
+          {
+            analyzeData && props.graphData &&
+            <AnalyzeGraphComponent data={props.graphData}/>
+          }
         </div>
       </div>
     </div>
   )
 };
 
-export {AnalyzeComponent};
+function mapStateToProps(state: GlobalStore)
+{
+  return {
+    graphData: state.analyze.graph_data
+  }
+}
+function mapDispatchToProps (dispatch: ThunkDispatch<GlobalStore, null, ActionPayload<AnalyzeFormData>>){
+  return {getGraphData: (data: AnalyzeFormData) => dispatch(receiveEconomicGraphData(data))}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnalyzeComponent);

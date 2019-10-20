@@ -51,7 +51,7 @@ const HomeComponent: React.FC<HomeProps> = (props) => {
 
   }, [props.statistics])
 
-  if (!props.statistics || !props.options.years)
+  if (!(props.statistics && props.statistics.short_statistics && props.statistics.short_statistics.total) || !props.options.years)
   {
     return (
       <div className="row">

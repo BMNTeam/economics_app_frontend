@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {Route, Switch} from "react-router";
 import AddData from "../features/add-data/add-data.component";
+import {AnalyzeComponent} from "../features/analize/analyze.component";
 import HomeComponent from "../features/home/home.component";
 import {GlobalStore} from "../store";
 import Footer from "./footer/footer";
@@ -21,6 +22,7 @@ export const MainComponent: React.FC<{showSideNav?: boolean}> = (props) => {
           <img className="image" src={Background}/>
           <Switch>
             <Route path={"/add-data"} component={AddData} />
+            <Route path={"/analyze"} component={AnalyzeComponent} />
             <Route path={"/"} component={HomeComponent} exact={true}/>
           </Switch>
         </div>

@@ -11,6 +11,7 @@ interface SidenavLink {
 const links: SidenavLink[] = [
   {name: "Главная", icon: "dashboard", to: "/"},
   {name: "Добавление", icon: "content_paste", to: "add-data"},
+  {name: "Анализ", icon: "find_in_page", to: "analyze"},
   {name: "О нас", icon: "info", to: "about"}
 ];
 

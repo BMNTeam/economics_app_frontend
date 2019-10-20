@@ -11,8 +11,8 @@ export function AddDataReducer(state: AddDataState = {} as AddDataState, action:
   {
     case RECEIVE_DATA_OPTIONS:{
       if(!action.payload) return;
-      const {cultures, years, farm_categories, stat_types} = action.payload;
-      return {...state, cultures, years, farm_categories, stat_types }
+      const {cultures, years, farm_categories, stat_types, regions} = action.payload;
+      return {...state, cultures, years, farm_categories, stat_types, regions }
     }
     case RECEIVE_MUNICIPALITIES_WITH_DATA: return {...state, municipalities: action.payload};
     default: return state;

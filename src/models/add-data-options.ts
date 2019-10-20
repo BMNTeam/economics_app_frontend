@@ -6,4 +6,5 @@ export interface AddDataOptions {
   cultures: BaseItem[];
   farm_categories: BaseItem[];
   stat_types: StatType[];
+  regions: BaseItem[]
 }

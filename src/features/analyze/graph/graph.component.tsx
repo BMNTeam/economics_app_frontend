@@ -1,8 +1,9 @@
 import React from "react";
-import {AnalyzeYearData} from "../../../models/analyze-year-data";
+import {AnalyzeYearData} from "../../../models/analyze-year-data"
 
 interface AnalyzeGraphProps {
   data: AnalyzeYearData[];
+  mockData?: AnalyzeYearData[];
 }
 
 export const AnalyzeGraphComponent: React.FC<AnalyzeGraphProps> = (props) => {
@@ -13,11 +14,23 @@ export const AnalyzeGraphComponent: React.FC<AnalyzeGraphProps> = (props) => {
   // Set a callback to run when the Google Visualization API is loaded.
   google.charts.setOnLoadCallback(drawChart);
 
-  const d = props.data.map(v => [v.year, v.data || 0]);
+  let d: (number | undefined)[][] = props.data.map(v => [v.year, v.data || 0]);
 
   // Callback that creates and populates a data table,
   // instantiates the pie chart, passes in the data and
   // draws it.
+
+
+  const getTempColumn = () => {
+    return d.map(v => {
+      if(props.mockData!.some(m => +m.year === v[0]))
+      {
+        return [...v, props.mockData!.find(m => +m.year === v[0])!.data];
+      }
+      return [...v, undefined];
+      });
+  };
+
   function drawChart() {
 
     // Create the data table.
@@ -25,11 +38,11 @@ export const AnalyzeGraphComponent: React.FC<AnalyzeGraphProps> = (props) => {
 
     data.addColumn('number', 'Год');
     data.addColumn('number', 'Значение');
-    data.addRows(d);
+
 
     const options = {
       title: 'Результаты анализа',
-      height: "400",
+      height: 400,
       hAxis: {
         format: ""
       },
@@ -39,13 +52,23 @@ export const AnalyzeGraphComponent: React.FC<AnalyzeGraphProps> = (props) => {
       legend: { position: 'bottom' }
     };
 
+    if(props.mockData && props.mockData.length)
+    {
+      data.addColumn('number', 'Температура');
+      d = getTempColumn();
+      (options as any).series = {
+        0: {axis: 'Economics'},
+        1: {axis: 'Climate'}
+      }
+    }
+    data.addRows(d);
+
     const chart = new google.charts.Line(document.getElementById('chart_div'));
 
     chart.draw(data, google.charts.Line.convertOptions(options));
   }
   return(
     <div id="chart_div">
-      1234
     </div>
   )
 };

@@ -21,7 +21,7 @@ export interface AnalyzeFormData {
 
 const analyzeTypes = [{id: 1, name: "Температура"}, {id: 2, name: "Осадки"}];
 const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"].map((e, i) => ({
-  id: ++i,
+  id: i,
   name: e
 }));
 
@@ -101,7 +101,7 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
       isWithAdditionalData: false
     };
 
-    return month.length && analyzeType ? data : {
+    return analyzeType && !month.length ? data : {
       ...data,
       monthsIds: month,
       analyzeTypeId: analyzeType,

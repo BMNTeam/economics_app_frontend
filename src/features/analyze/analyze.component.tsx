@@ -6,19 +6,28 @@ import {GlobalStore} from "../../store";
 import {receiveEconomicGraphData} from "./analyze.actions";
 import AnalyzeFormComponent, {AnalyzeFormData} from "./form/analyze-form.component";
 import {AnalyzeGraphComponent} from "./graph/graph.component";
+import {Correlation} from "./mock-climate/correlation";
+import {MockClimateTemperature} from "./mock-climate/mock-climate-temperature";
 
 type AnalyzeComponentProps = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
 
 const AnalyzeComponent:React.FC<AnalyzeComponentProps> =  (props) => {
-  const [analyzeData, setAnalyzeData] = useState();
+  const [analyzeData, setAnalyzeData] = useState<AnalyzeFormData>();
   const changedAnalyzedData = (d: AnalyzeFormData) => setAnalyzeData(d);
+
+  const [climateGraphData, setClimateGraphData] = useState();
+
+  const getClimateGraphData = (analyzeData: AnalyzeFormData) => {
+    return analyzeData.isWithAdditionalData && analyzeData.monthsIds
+      ? new MockClimateTemperature(analyzeData.monthsIds).getGraphData()
+      : null
+  };
 
   useEffect(() => {
     if(!analyzeData) return;
+    setClimateGraphData(getClimateGraphData(analyzeData));
     props.getGraphData(analyzeData);
   }, [analyzeData]);
-
-
 
   return (
     <div>
@@ -32,7 +41,13 @@ const AnalyzeComponent:React.FC<AnalyzeComponentProps> =  (props) => {
           <br/>
           {
             analyzeData && props.graphData &&
-            <AnalyzeGraphComponent data={props.graphData}/>
+            <AnalyzeGraphComponent mockData={climateGraphData} data={props.graphData}/>
+          }
+          {
+            analyzeData && props.graphData && climateGraphData &&
+            <h3> Коэффициент парной линейной корреляции:
+              <b className={'pl-3'}>{new Correlation(props.graphData, climateGraphData).getCoefficient()}</b>
+            </h3>
           }
         </div>
       </div>

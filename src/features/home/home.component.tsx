@@ -49,7 +49,7 @@ const HomeComponent: React.FC<HomeProps> = (props) => {
 
   useEffect(() => {
 
-  }, [props.statistics])
+  }, [props.statistics]);
 
   if (!(props.statistics && props.statistics.short_statistics && props.statistics.short_statistics.total) || !props.options.years)
   {
@@ -104,7 +104,7 @@ const HomeComponent: React.FC<HomeProps> = (props) => {
         </div>
 
         <div className="col-lg-3 col-md-6 col-sm-6">
-          <StatComponent icon="info" category="Урожайность за год" value={`${Math.round(short_statistics.productivity_sum * 100) / 100}`} color="card-header-warning" additional={additional}/>
+          <StatComponent icon="info" category="Урожайность за год" value={`${Math.round(short_statistics.productivity_sum * 100) / 100} ц./га.`} color="card-header-warning" additional={additional}/>
         </div>
       </div>
 

@@ -19,7 +19,7 @@ const AnalyzeComponent:React.FC<AnalyzeComponentProps> =  (props) => {
 
   const getClimateGraphData = (analyzeData: AnalyzeFormData) => {
     return analyzeData.isWithAdditionalData && analyzeData.monthsIds
-      ? new MockClimateTemperature(analyzeData.monthsIds).getGraphData()
+      ? new MockClimateTemperature(analyzeData.monthsIds, analyzeData.isMoveData).getGraphData()
       : null
   };
 
@@ -38,19 +38,24 @@ const AnalyzeComponent:React.FC<AnalyzeComponentProps> =  (props) => {
         </div>
         <div className="card-body">
           <AnalyzeFormComponent action={changedAnalyzedData}/>
-          <br/>
+        </div>
+      </div>
+
+      {analyzeData && props.analyzeData.stat_type &&
+      <div className="card">
+        <div className="card-body">
           {
-            analyzeData && props.graphData &&
-            <AnalyzeGraphComponent mockData={climateGraphData} data={props.graphData}/>
+            <AnalyzeGraphComponent mockData={climateGraphData} data={props.analyzeData}/>
           }
           {
-            analyzeData && props.graphData && climateGraphData &&
+            climateGraphData &&
             <h3> Коэффициент парной линейной корреляции:
-              <b className={'pl-3'}>{new Correlation(props.graphData, climateGraphData).getCoefficient()}</b>
+              <b className={'pl-3'}>{new Correlation(props.analyzeData.graph_data, climateGraphData).getCoefficient()}</b>
             </h3>
           }
         </div>
       </div>
+      }
     </div>
   )
 };
@@ -58,7 +63,7 @@ const AnalyzeComponent:React.FC<AnalyzeComponentProps> =  (props) => {
 function mapStateToProps(state: GlobalStore)
 {
   return {
-    graphData: state.analyze.graph_data
+    analyzeData: state.analyze
   }
 }
 function mapDispatchToProps (dispatch: ThunkDispatch<GlobalStore, null, ActionPayload<AnalyzeFormData>>){

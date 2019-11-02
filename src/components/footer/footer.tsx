@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
           <ul>
             <li>
               <a href="https://fnac.center">
-                СНИИСХ
+                Северо-Кавказский ФНАЦ
               </a>
             </li>
             <li>

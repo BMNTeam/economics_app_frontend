@@ -16,10 +16,12 @@ export interface AnalyzeFormData {
   farmCategoryId: number;
   isWithAdditionalData: boolean;
   analyzeTypeId?: number;
+  isMoveData?: boolean;
   monthsIds?: number[];
 }
 
 const analyzeTypes = [{id: 1, name: "Температура"}, {id: 2, name: "Осадки"}];
+const systemTypes = [{id: 1, name: "Климат"}, {id: 2, name: "Статистика"}];
 const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"].map((e, i) => ({
   id: i,
   name: e
@@ -43,16 +45,30 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
   const [region, setRegion] = useState();
   const changedRegion = (e: ChangeEvent<HTMLSelectElement>) => setRegion(e.target.value);
   const regionSelect = <SelectComponent action={changedRegion}
-                                           label={'Район'}
-                                           options={props.options.regions}
-                                           value={region}/>;
+                                        label={"Район"}
+                                        options={props.options.regions}
+                                        value={region}/>;
+
+  const [isMoveData, setIsMoveData] = useState(false);
+  const changedIsMoveData = (e: ChangeEvent<HTMLInputElement>) =>
+  {
+    setIsMoveData(!isMoveData);
+  };
+
+  const [weatherStation, setWeatherStation] = useState();
+  const changedWeatherStation =(e: ChangeEvent<HTMLSelectElement>) => setWeatherStation(e.target.value);
+  const weatherStationSelect = <SelectComponent action={changedWeatherStation}
+                                        label={"Метеостанция"}
+                                        options={props.options.regions}
+                                        value={weatherStation}/>;
+
 
   const [statType, setStatType] = useState();
   const changedStatType = (e: ChangeEvent<HTMLSelectElement>) => setStatType(e.target.value);
   const statTypeSelect = <SelectComponent action={changedStatType}
-                                             label={'Показатель'}
-                                             options={props.options.stat_types}
-                                             value={statType}/>;
+                                          label={'Показатель'}
+                                          options={props.options.stat_types}
+                                          value={statType}/>;
 
   const [farmCategory, setFarmCategory] = useState();
   const changedFarmCategory = (e: ChangeEvent<HTMLSelectElement>) => setFarmCategory(e.target.value);
@@ -64,6 +80,12 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
   const changedAnalyzeType = (e: ChangeEvent<HTMLInputElement>) =>
   {
     setAnalyzeType(e.target.value);
+  };
+
+  const [systemType, setSystemType] = useState();
+  const changedSystemType = (e: ChangeEvent<HTMLInputElement>) =>
+  {
+    setSystemType(e.target.value);
   };
 
   const [month, setMonth] = useState([] as number[]);
@@ -101,9 +123,10 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
       isWithAdditionalData: false
     };
 
-    return analyzeType && !month.length ? data : {
+    return !(analyzeType && month.length) ? data : {
       ...data,
       monthsIds: month,
+      isMoveData: isMoveData,
       analyzeTypeId: analyzeType,
       isWithAdditionalData: true
     }
@@ -138,10 +161,16 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
             <br/>
             <h6> Выберите дополнительную шкалу</h6>
             <div className="row">
-              <div className="col-sm-3">
-                {analyzeTypes.map((e, i) => <RadioButtonComponent action={changedAnalyzeType}
-                                                                  option={e} key={i}
-                                                                  name="analyzeType"/>)}
+              <div className="col-sm-1">
+                    {systemTypes.map((e, i) => <RadioButtonComponent action={changedSystemType}
+                                                                      option={e} key={i}
+                                                                      name="systemType"/>)}
+
+              </div>
+              <div className="col-sm-2">
+                  {analyzeTypes.map((e, i) => <RadioButtonComponent action={changedAnalyzeType}
+                                                                    option={e} key={i}
+                                                                    name="analyzeType"/>)}
               </div>
               <div className="col-sm-9">
                 <div className="d-flex justify-content-between align-items-center h-100">
@@ -149,10 +178,25 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
                 </div>
               </div>
             </div>
+            <div className="row">
+              <div className="col-sm-2 offset-1">
+                <div className="form-group bmd-form-group">
+                  <label htmlFor="">Корреляция</label>
+                  <CheckboxComponent action={changedIsMoveData} option={{id: 1, name: "Сдвиг"}}/>
+                </div>
+              </div>
+              <div className="col-sm-2">
+                {weatherStationSelect}
+              </div>
+
+            </div>
           </div>
         }
         <br/>
-        <button type={"submit"} disabled={!isAnalyzeButtonActive()} className="btn btn-primary"> Анализировать</button>
+        <div className={"text-right"}>
+          <button type={"submit"} disabled={!isAnalyzeButtonActive()} className="btn btn-primary"> Анализировать</button>
+        </div>
+
       </form>
     </div>
   )

@@ -59,6 +59,7 @@ const NavBar: React.FC<NavBarProps> = (props) => {
                 </p>
               </a>
             </li>*/}
+            Антонов С.А.
             <DropdownMenuItem icon="person" items={userMenuItems}/>
             {!!props.notifications.data.length && props.notifications.data
               .map((e,i) => <NotificationComponent

@@ -20,8 +20,7 @@ const Footer: React.FC = () => {
           </ul>
         </nav>
         <div className="copyright float-right">
-          © 2019 с любовью <i className="material-icons">favorite</i> от
-          <a target="_blank"> ГИС</a>.
+          © 2019 <a target="_blank"> ГИС</a>
         </div>
       </div>
     </footer>

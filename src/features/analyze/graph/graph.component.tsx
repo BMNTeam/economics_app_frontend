@@ -16,7 +16,8 @@ export const AnalyzeGraphComponent: React.FC<AnalyzeGraphProps> = (props) =>
   // Set a callback to run when the Google Visualization API is loaded.
   google.charts.setOnLoadCallback(drawChart);
 
-  let d: (number | undefined)[][] = props.data.graph_data.map(v => [v.year, v.data || 0]);
+  let d: (number | undefined)[][] = props.data.graph_data
+    .map(v => [v.year, (v.data && Math.round(v.data * 100)/100) || 0]);
 
   // Callback that creates and populates a data table,
   // instantiates the pie chart, passes in the data and
@@ -40,6 +41,9 @@ export const AnalyzeGraphComponent: React.FC<AnalyzeGraphProps> = (props) =>
 
     // Create the data table.
     const data = new google.visualization.DataTable();
+    const formatter = new google.visualization.NumberFormat({
+      pattern: "0"
+    });
 
     data.addColumn('number', 'Год');
     data.addColumn('number', `${props.data.stat_type.name} ${props.data.stat_type.unit}`);
@@ -51,7 +55,7 @@ export const AnalyzeGraphComponent: React.FC<AnalyzeGraphProps> = (props) =>
       theme: "material",
       hAxis: {
         title: "Год",
-        format: " ",
+        format: "0",
         ticks: props.data.graph_data.map(v => v.year)
       },
       vAxis: {
@@ -78,6 +82,7 @@ export const AnalyzeGraphComponent: React.FC<AnalyzeGraphProps> = (props) =>
 
     }
     data.addRows(d);
+    formatter.format(data, 0);
 
     const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 

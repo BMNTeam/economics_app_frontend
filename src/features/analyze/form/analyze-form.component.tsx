@@ -3,12 +3,12 @@ import {ThunkDispatch} from "redux-thunk";
 import CheckboxComponent from "../../../components/shared/checkbox/checkbox.component";
 import RadioButtonComponent from "../../../components/shared/radio-button/radio-button.component";
 import SelectComponent from "../../../components/shared/select/select.component";
-import {BaseItem} from "../../../models/base-item";
 import {ActionPayload} from "../../../shared";
 import {GlobalStore} from "../../../store";
 import {connect} from "react-redux";
 import {receiveAllOptions} from "../../add-data/add-data.actions";
 import ClimateFormComponent, {ClimateFormState} from "./cimate-form.compnent";
+import {analyzeTypes, months, systemTypes, weatherStations} from "./static.const";
 
 export interface AnalyzeFormData {
   cultureId: number;
@@ -21,12 +21,6 @@ export interface AnalyzeFormData {
   monthsIds?: number[];
 }
 
-const analyzeTypes = [{id: 1, name: "Температура"}, {id: 2, name: "Осадки"}];
-const systemTypes = [{id: 1, name: "Климат"}, {id: 2, name: "Статистика"}];
-const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"].map((e, i) => ({
-  id: i,
-  name: e
-}));
 
 type AnalyzeFormProps =
   ReturnType<typeof mapStateToProps>
@@ -51,7 +45,7 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
   const changedWeatherStation = (e: ChangeEvent<HTMLSelectElement>) => setWeatherStation(e.target.value);
   const weatherStationSelect = <SelectComponent action={changedWeatherStation}
                                                 label={"Метеостанция"}
-                                                options={props.options.regions}
+                                                options={weatherStations}
                                                 value={weatherStation}/>;
 
 
@@ -135,6 +129,7 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
 
               </div>
               {
+                // Climate
                 systemType === "1" &&
                 <div className="col-sm-11">
                   <div className="row">

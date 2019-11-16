@@ -53,6 +53,7 @@ export const AnalyzeGraphComponent: React.FC<AnalyzeGraphProps> = (props) =>
       title: 'Результаты анализа',
       height: 500,
       theme: "material",
+      colors: ['green', 'red'],
       hAxis: {
         title: "Год",
         format: "0",

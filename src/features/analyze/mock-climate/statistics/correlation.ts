@@ -1,4 +1,4 @@
-import {AnalyzeYearData} from "../../../models/analyze-year-data";
+import {AnalyzeYearData} from "../../../../models/analyze-year-data";
 
 export class Correlation {
   private readonly x: number[];

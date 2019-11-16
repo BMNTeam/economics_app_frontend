@@ -6,8 +6,9 @@ import {GlobalStore} from "../../store";
 import {receiveEconomicGraphData} from "./analyze.actions";
 import AnalyzeFormComponent, {AnalyzeFormData} from "./form/analyze-form.component";
 import {AnalyzeGraphComponent} from "./graph/graph.component";
-import {Correlation} from "./mock-climate/correlation";
+import {Correlation} from "./mock-climate/statistics/correlation";
 import {MockClimateTemperature} from "./mock-climate/mock-climate-temperature";
+import {ShortStatisticsComponent} from "./mock-climate/statistics/short-statistics.component";
 
 type AnalyzeComponentProps = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
 
@@ -52,6 +53,16 @@ const AnalyzeComponent:React.FC<AnalyzeComponentProps> =  (props) => {
             <h3> Коэффициент парной линейной корреляции:
               <b className={'pl-3'}>{new Correlation(props.analyzeData.graph_data, climateGraphData).getCoefficient()}</b>
             </h3>
+          }
+        </div>
+      </div>
+      }
+
+      {analyzeData && props.analyzeData.stat_type &&
+      <div className="card">
+        <div className="card-body">
+          {
+            <ShortStatisticsComponent economic={props.analyzeData.graph_data} climate={climateGraphData} name={props.analyzeData.stat_type.name}/>
           }
         </div>
       </div>

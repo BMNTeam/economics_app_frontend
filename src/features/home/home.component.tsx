@@ -96,7 +96,7 @@ const HomeComponent: React.FC<HomeProps> = (props) => {
           </div>
 
         <div className="col-lg-3 col-md-6 col-sm-6">
-          <StatComponent icon="info" category="Посевная площадь за год" value={`${short_statistics.cultivation_area_sum} тыс. гектар`} color="card-header-danger" additional={additional}/>
+          <StatComponent icon="info" category="Посевная площадь за год" value={`${short_statistics.cultivation_area_sum} тыс. га`} color="card-header-danger" additional={additional}/>
         </div>
 
         <div className="col-lg-3 col-md-6 col-sm-6">
@@ -104,7 +104,7 @@ const HomeComponent: React.FC<HomeProps> = (props) => {
         </div>
 
         <div className="col-lg-3 col-md-6 col-sm-6">
-          <StatComponent icon="info" category="Урожайность за год" value={`${Math.round(short_statistics.productivity_sum * 100) / 100} ц./га.`} color="card-header-warning" additional={additional}/>
+          <StatComponent icon="info" category="Урожайность за год" value={`${Math.round(short_statistics.productivity_sum * 100) / 100} ц/га`} color="card-header-warning" additional={additional}/>
         </div>
       </div>
 

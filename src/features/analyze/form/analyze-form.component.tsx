@@ -122,7 +122,7 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
             <br/>
             <h6> Выберите дополнительную шкалу</h6>
             <div className="row">
-              <div className="col-sm-1">
+              <div className="col-lg-2">
                 {systemTypes.map((e, i) => <RadioButtonComponent action={changedSystemType}
                                                                  option={e} key={i}
                                                                  name="systemType"/>)}
@@ -131,15 +131,15 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
               {
                 // Climate
                 systemType === "1" &&
-                <div className="col-sm-11">
+                <div className="col-lg-10">
                   <div className="row">
-                    <div className="col-sm-2">
+                    <div className="col-md-2">
                       {analyzeTypes.map((e, i) => <RadioButtonComponent action={changedAnalyzeType}
                                                                         option={e} key={i}
                                                                         name="analyzeType"/>)}
                     </div>
-                    <div className="col-sm-9">
-                      <div className="d-flex justify-content-between align-items-center h-100">
+                    <div className="col-md-10">
+                      <div className="d-flex justify-content-around align-items-center flex-wrap h-100">
                         {months.map((e, i) => <CheckboxComponent action={changedMonth} option={e} key={i}/>)}
                       </div>
                     </div>
@@ -151,7 +151,7 @@ const AnalyzeFormComponent: React.FC<AnalyzeFormProps> = (props) =>
               // Climate
               systemType === "1" &&
               <div className="row">
-                <div className="col-sm-2 offset-1">
+                <div className="col-md-2 offset-2">
                   <div className="form-group bmd-form-group">
                     <label htmlFor="">Корреляция</label>
                     <CheckboxComponent action={changedIsMoveData} option={{id: 1, name: "Сдвиг"}}/>

@@ -1,13 +1,13 @@
 import React from "react";
 import {AnalyzeYearData} from "../../../../models/analyze-year-data";
 import {Statistics} from "./statistics";
+import "./short-statistics.component.scss";
 
 interface ShortStatisticsProps {
   economic: AnalyzeYearData[];
   climate?: AnalyzeYearData[];
   name: string;
 }
-
 export const ShortStatisticsComponent: React.FC<ShortStatisticsProps> = (props) =>
 {
   const economicsStat = new Statistics(props.economic.filter(e => !!e.data).map(v => v.data || 0));
@@ -19,11 +19,11 @@ export const ShortStatisticsComponent: React.FC<ShortStatisticsProps> = (props) 
   };
 
   return (
-    <table className="table table-hover">
+    <table className="table table-hover short-statistics--table">
       <thead>
         <tr>
-          <th>{props.name}</th>
-          {climateStat && <th>Температура</th>}
+          <td>{props.name}</td>
+          {climateStat && <td>Температура</td>}
         </tr>
       </thead>
       <tbody>
